@@ -1,4 +1,14 @@
 {
   "version": 1,
-  "deployAliases": {}
+  "deployAliases": {
+    "mina201": {
+      "networkId": "testnet",
+      "url": "https://api.minascan.io/node/devnet/v1/graphql",
+      "keyPath": "keys/mina201.json",
+      "feepayerKeyPath": "/Users/hiro/.cache/zkapp-cli/keys/mina201.json",
+      "feepayerAlias": "mina201",
+      "fee": "0.1",
+      "smartContract": "Add"
+    }
+  }
 }
