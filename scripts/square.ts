@@ -20,7 +20,7 @@ let deployerAccount: Mina.TestPublicKey,
   zkAppPrivateKey: PrivateKey,
   zkApp: Square;
 
-const useProof = false;
+const useProof = true;
 
 if (useProof) await Square.compile();
 
