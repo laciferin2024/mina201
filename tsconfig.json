@@ -19,6 +19,11 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
+    "paths": {
+      "@/*": ["./*"],
+      "@src/*":[ "./src/*"], 
+      "@scripts/*":[ "./scripts/*"], 
+    }
   },
-  "include": ["./src"],
+  "include": ["./src", "./scripts/"],
 }
