@@ -10,7 +10,7 @@ import {
   AccountUpdate,
 } from 'o1js';
 
-import { Square } from './Square.js';
+import { Square } from '../src/Square.js';
 
 let deployerAccount: Mina.TestPublicKey,
   deployerKey: PrivateKey,
