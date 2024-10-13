@@ -25,5 +25,5 @@
       "@scripts/*":[ "./scripts/*"], 
     }
   },
-  "include": ["./src", "./scripts/"],
+  "include": ["./src", "./scripts/", "scripts/square.ts", "build/src/main.ts"],
 }
