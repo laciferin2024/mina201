@@ -1,3 +1,7 @@
+// import { config } from 'dotenv';
+
+// config();
+
 export const PROOFS_ENABLED =
   json<boolean>(process.env.PROOFS_ENABLED) || false;
 

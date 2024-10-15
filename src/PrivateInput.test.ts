@@ -66,6 +66,8 @@ describe('PrivateInput', () => {
 
     const secretHash = zkApp.x.get();
     console.log({ secretHash: secretHash.toString() });
+
+    console.log(txn.toPretty());
   });
 
   it('incrementSecret', async () => {
