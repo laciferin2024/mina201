@@ -13,7 +13,7 @@ import { CrowdFund } from './CrowdFund';
 type ZkApp = CrowdFund;
 
 const salt = Field.random();
-let goal = Field.random();
+let goal = 1000;
 
 describe('CrowdFund', () => {
   let deployerAccount: Mina.TestPublicKey,
@@ -57,15 +57,17 @@ describe('CrowdFund', () => {
   }
 
   const printProgress = async () => {
-    const curBal = await zkApp.account.balance;
-    console.log(`${curBal}/${zkApp.goal.get().toString()}`);
+    const curBal = zkApp.account.balance.get();
+    const goal = zkApp.goal.get();
+    console.log(`${curBal.toString()}/${goal.toString()}`);
   };
 
   it('init', async () => {
     // await localDeploy();
+    printProgress();
 
     const txn = await Mina.transaction(senderAccount, async () => {
-      await zkApp.initState(goal);
+      await zkApp.initState(Field(goal));
     });
     await txn.prove();
     await txn.sign([senderKey]).send();
