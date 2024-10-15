@@ -1,5 +1,12 @@
 import { PrivateInput } from './PrivateInput';
-import { AccountUpdate, Field, Mina, PrivateKey, PublicKey } from 'o1js';
+import {
+  AccountUpdate,
+  assert,
+  Field,
+  Mina,
+  PrivateKey,
+  PublicKey,
+} from 'o1js';
 import { PROOFS_ENABLED } from './config';
 
 type ZkApp = PrivateInput;
@@ -8,10 +15,6 @@ const salt = Field.random();
 let number = 16;
 
 describe('PrivateInput', () => {
-  describe('PrivateInput()', () => {
-    it.todo('should be correct');
-  });
-
   let deployerAccount: Mina.TestPublicKey,
     deployerKey: PrivateKey,
     senderAccount: Mina.TestPublicKey,
@@ -58,4 +61,15 @@ describe('PrivateInput', () => {
     const secretHash = zkApp.x.get();
     console.log({ secretHash: secretHash.toString() });
   });
+
+  // it('incrementSecret', async () => {
+  //   const txn = await Mina.transaction(senderAccount, async () => {
+  //     await zkApp.incrementSecret(salt, Field(number));
+  //   });
+  //   await txn.prove();
+  //   await txn.sign([senderKey]).send();
+
+  //   // const secretHash = zkApp.x.get();
+  //   // console.log({ secretHash: secretHash.toString() });
+  // });
 });
