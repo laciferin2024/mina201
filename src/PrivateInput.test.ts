@@ -78,4 +78,14 @@ describe('PrivateInput', () => {
     // const secretHash = zkApp.x.get();
     // console.log({ secretHash: secretHash.toString() });
   });
+
+  it('increment 100 times', async () => {
+    const txn = await Mina.transaction(senderAccount, async () => {
+      for (let i = 0; i < 100; i++) {
+        await zkApp.incrementSecret(salt, Field(number++));
+      }
+    });
+    await txn.prove();
+    await txn.sign([senderKey]).send();
+  });
 });
