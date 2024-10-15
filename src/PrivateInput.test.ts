@@ -25,10 +25,10 @@ describe('PrivateInput', () => {
 
   beforeAll(async () => {
     if (PROOFS_ENABLED) await PrivateInput.compile();
-  });
 
-  beforeEach(async () => {
-    const Local = await Mina.LocalBlockchain({ proofsEnabled: PROOFS_ENABLED });
+    const Local = await Mina.LocalBlockchain({
+      proofsEnabled: PROOFS_ENABLED,
+    });
     Mina.setActiveInstance(Local);
     [deployerAccount, senderAccount] = Local.testAccounts;
     deployerKey = deployerAccount.key;
@@ -39,6 +39,10 @@ describe('PrivateInput', () => {
     zkApp = new PrivateInput(zkAppAddress);
 
     await localDeploy();
+  });
+
+  beforeEach(async () => {
+    // await localDeploy();
   });
 
   async function localDeploy() {
@@ -52,6 +56,8 @@ describe('PrivateInput', () => {
   }
 
   it('init', async () => {
+    // await localDeploy();
+
     const txn = await Mina.transaction(senderAccount, async () => {
       await zkApp.initState(salt, Field(number));
     });
@@ -62,14 +68,14 @@ describe('PrivateInput', () => {
     console.log({ secretHash: secretHash.toString() });
   });
 
-  // it('incrementSecret', async () => {
-  //   const txn = await Mina.transaction(senderAccount, async () => {
-  //     await zkApp.incrementSecret(salt, Field(number));
-  //   });
-  //   await txn.prove();
-  //   await txn.sign([senderKey]).send();
+  it('incrementSecret', async () => {
+    const txn = await Mina.transaction(senderAccount, async () => {
+      await zkApp.incrementSecret(salt, Field(number));
+    });
+    await txn.prove();
+    await txn.sign([senderKey]).send();
 
-  //   // const secretHash = zkApp.x.get();
-  //   // console.log({ secretHash: secretHash.toString() });
-  // });
+    // const secretHash = zkApp.x.get();
+    // console.log({ secretHash: secretHash.toString() });
+  });
 });
