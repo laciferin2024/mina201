@@ -73,4 +73,16 @@ describe('CrowdFund', () => {
 
     printProgress();
   });
+
+  it('fund zkApp', async () => {
+    const txn = await Mina.transaction(senderAccount, async () => {
+      let senderUpdate = AccountUpdate.create(senderAccount);
+      senderUpdate.requireSignature();
+      senderUpdate.send({ to: zkAppAddress, amount: 100 });
+    });
+    await txn.prove();
+    await txn.sign([senderKey]).send();
+
+    await printProgress();
+  });
 });
