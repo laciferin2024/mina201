@@ -1,7 +1,11 @@
 export const PROOFS_ENABLED =
-  (json(process.env.PROOFS_ENABLED as string) as boolean) || false;
+  json<boolean>(process.env.PROOFS_ENABLED) || false;
 
-function json(val: any) {
+function json<T>(val: any): T {
   val ??= null;
-  return JSON.parse(val);
+  let retVal = JSON.parse(val as string);
+
+  console.log({ retVal });
+
+  return retVal as T;
 }
