@@ -80,13 +80,13 @@ describe('PrivateInput', () => {
   });
 
   it('increment 100 times', async () => {
-    for (let i = 0; i < 100; i++) {
-      number += 1;
-      const txn = await Mina.transaction(senderAccount, async () => {
+    const txn = await Mina.transaction(senderAccount, async () => {
+      for (let i = 0; i < 100; i++) {
+        number += 1;
         await zkApp.incrementSecret(salt, Field(number));
-      });
-      await txn.prove();
-      await txn.sign([senderKey]).send();
-    }
+      }
+    });
+    await txn.prove();
+    await txn.sign([senderKey]).send();
   });
 });
