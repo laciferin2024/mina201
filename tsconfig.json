@@ -23,7 +23,8 @@
       "@/*": ["./*"],
       "@src/*":[ "./src/*"], 
       "@scripts/*":[ "./scripts/*"], 
+      "@config/*":[ "./config/*"], 
     }
   },
-  "include": ["./src", "./scripts/", "scripts/square.ts", "build/src/main.ts"],
+  "include": ["./src", "./scripts/", "./config/"],
 }
