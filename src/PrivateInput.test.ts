@@ -1,10 +1,10 @@
 import { PrivateInput } from './PrivateInput';
 import { AccountUpdate, Field, Mina, PrivateKey, PublicKey } from 'o1js';
-import { PROOFS_ENABLED } from '@/config';
+import { PROOFS_ENABLED } from './config';
 
 type ZkApp = PrivateInput;
 
-const salt = 'hiro';
+const salt = Field.random();
 let number = 16;
 
 describe('PrivateInput', () => {
@@ -50,8 +50,12 @@ describe('PrivateInput', () => {
 
   it('init', async () => {
     const txn = await Mina.transaction(senderAccount, async () => {
-      await zkApp.initState(Field(salt), Field(number));
+      await zkApp.initState(salt, Field(number));
     });
     await txn.prove();
+    await txn.sign([senderKey]).send();
+
+    const secretHash = zkApp.x.get();
+    console.log({ secretHash: secretHash.toString() });
   });
 });
