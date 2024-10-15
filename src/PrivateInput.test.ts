@@ -4,6 +4,9 @@ import { PROOFS_ENABLED } from '@/config';
 
 type ZkApp = PrivateInput;
 
+const salt = 'hiro';
+let number = 16;
+
 describe('PrivateInput', () => {
   describe('PrivateInput()', () => {
     it.todo('should be correct');
@@ -31,6 +34,8 @@ describe('PrivateInput', () => {
     zkAppPrivateKey = PrivateKey.random();
     zkAppAddress = zkAppPrivateKey.toPublicKey();
     zkApp = new PrivateInput(zkAppAddress);
+
+    await localDeploy();
   });
 
   async function localDeploy() {
@@ -42,4 +47,11 @@ describe('PrivateInput', () => {
     // this tx needs .sign(), because `deploy()` adds an account update that requires signature authorization
     await txn.sign([deployerKey, zkAppPrivateKey]).send();
   }
+
+  it('init', async () => {
+    const txn = await Mina.transaction(senderAccount, async () => {
+      await zkApp.initState(Field(salt), Field(number));
+    });
+    await txn.prove();
+  });
 });
