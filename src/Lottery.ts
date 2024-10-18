@@ -23,7 +23,10 @@ export class Lottery extends SmartContract {
 
     this.account.balance.requireEquals(this.account.balance.get());
 
-    this.send({ to: this.sender, amount: this.account.balance.get() });
+    this.send({
+      to: this.sender.getUnconstrained(),
+      amount: this.account.balance.get(),
+    });
 
     this.emitEvent('Amount Transferred', Field(1));
 
