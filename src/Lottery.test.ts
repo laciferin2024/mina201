@@ -103,5 +103,7 @@ describe('Lottery', () => {
 
     console.log('event 1:', events[0].type, events[0].event.data);
     console.log('event 2:', events[1].type, events[1].event.data);
+
+    console.log('Tx:', txn.toPretty());
   });
 });
