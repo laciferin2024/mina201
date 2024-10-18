@@ -77,5 +77,31 @@ export class SudokuZkApp extends SmartContract {
 
       assertHas1To9(square);
     }
+
+    // check if solution extends initial sudoku
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        let cell = sudoku[i][j];
+        let solutionCell = solution[i][j];
+        // either the sudoku has nothing in it  (indicated by a cell value of 0)
+        // or it is equal to the solutioin
+
+        Bool.or(cell.equals(0), cell.equals(solutionCell)).assertTrue(
+          `solution cell (${i + 1}, ${j + 1}) matches original sudoku`
+        );
+      }
+    }
+
+    let sudokuHash = this.sudokuHash.getAndRequireEquals();
+    sudokuInstance
+      .hash()
+      .assertEquals(sudokuHash, 'sudoku matches the one committed on-chain');
+
+    this.isSolved.set(Bool(true));
+
+    function divmod(k: number, n: number) {
+      let q = Math.floor(k / n);
+      return [q, k - q * n];
+    }
   }
 }
