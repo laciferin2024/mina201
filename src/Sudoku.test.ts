@@ -8,10 +8,10 @@ import {
   UInt32,
 } from 'o1js';
 import { PROOFS_ENABLED } from './config';
-import { SudokuZkApp, Sudoku } from './Sudoku';
+import { Sudoku, ISudoku } from './Sudoku';
 import { cloneSudoku, generateSudoku, solveSudoku } from './Sudoku-lib';
 
-type ZkApp = SudokuZkApp;
+type ZkApp = Sudoku;
 
 const salt = Field.random();
 let number = 16;
@@ -30,7 +30,7 @@ describe('SudokuZkApp', () => {
     zkApp: ZkApp;
 
   beforeAll(async () => {
-    if (PROOFS_ENABLED) await SudokuZkApp.compile();
+    if (PROOFS_ENABLED) await Sudoku.compile();
 
     const Local = await Mina.LocalBlockchain({
       proofsEnabled: PROOFS_ENABLED,
@@ -42,7 +42,7 @@ describe('SudokuZkApp', () => {
 
     zkAppPrivateKey = PrivateKey.random();
     zkAppAddress = zkAppPrivateKey.toPublicKey();
-    zkApp = new SudokuZkApp(zkAppAddress);
+    zkApp = new Sudoku(zkAppAddress);
 
     await localDeploy();
   });
@@ -55,7 +55,7 @@ describe('SudokuZkApp', () => {
     const txn = await Mina.transaction(deployerAccount, async () => {
       AccountUpdate.fundNewAccount(deployerAccount);
       await zkApp.deploy();
-      await zkApp.update(Sudoku.from(sudoku)); //init sudoku puzzle
+      await zkApp.update(ISudoku.from(sudoku)); //init sudoku puzzle
     });
     await txn.prove();
     // this tx needs .sign(), because `deploy()` adds an account update that requires signature authorization
@@ -66,7 +66,7 @@ describe('SudokuZkApp', () => {
     // await localDeploy();
 
     const txn = await Mina.transaction(senderAccount, async () => {
-      await zkApp.update(Sudoku.from(sudoku));
+      await zkApp.update(ISudoku.from(sudoku));
     });
     await txn.prove();
     await txn.sign([senderKey]).send();
@@ -86,8 +86,8 @@ describe('SudokuZkApp', () => {
     try {
       const txn = await Mina.transaction(senderAccount, async () => {
         await zkApp.submitSolution(
-          Sudoku.from(sudoku),
-          Sudoku.from(wrongSolution)
+          ISudoku.from(sudoku),
+          ISudoku.from(wrongSolution)
         );
       });
       await txn.prove();
@@ -103,7 +103,10 @@ describe('SudokuZkApp', () => {
   it('submit solution', async () => {
     try {
       const txn = await Mina.transaction(senderAccount, async () => {
-        await zkApp.submitSolution(Sudoku.from(sudoku), Sudoku.from(solution));
+        await zkApp.submitSolution(
+          ISudoku.from(sudoku),
+          ISudoku.from(solution)
+        );
       });
       await txn.prove();
       await txn.sign([senderKey]).send();

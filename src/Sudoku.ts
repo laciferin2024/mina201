@@ -10,11 +10,11 @@ import {
   Bool,
 } from 'o1js';
 
-export class Sudoku extends Struct({
+export class ISudoku extends Struct({
   value: Provable.Array(Provable.Array(Field, 9), 9),
 }) {
   static from(value: number[][]) {
-    return new Sudoku({ value: value.map((row) => row.map(Field)) });
+    return new ISudoku({ value: value.map((row) => row.map(Field)) });
   }
 
   hash() {
@@ -22,7 +22,7 @@ export class Sudoku extends Struct({
   }
 }
 
-export class SudokuZkApp extends SmartContract {
+export class Sudoku extends SmartContract {
   @state(Field) sudokuHash = State<Field>();
   @state(Bool) isSolved = State<Bool>();
 
@@ -30,14 +30,14 @@ export class SudokuZkApp extends SmartContract {
     super.init();
   }
 
-  @method async update(sudokuInstance: Sudoku) {
+  @method async update(sudokuInstance: ISudoku) {
     this.sudokuHash.set(sudokuInstance.hash());
     this.isSolved.set(Bool(false));
   }
 
   @method async submitSolution(
-    sudokuInstance: Sudoku,
-    solutionInstance: Sudoku
+    sudokuInstance: ISudoku,
+    solutionInstance: ISudoku
   ) {
     let sudoku = sudokuInstance.value;
     let solution = solutionInstance.value;
