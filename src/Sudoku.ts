@@ -29,14 +29,14 @@ export class Sudoku extends SmartContract {
   @state(Bool) isSolved = State<Bool>();
   @state(PublicKey) solvedBy = State<PublicKey>();
 
-  @method async init() {
+  init() {
     super.init();
+    this.isSolved.set(Bool(false));
   }
 
   @method async update(sudokuInstance: ISudoku) {
     // this.isSolved.getAndRequireEquals().assertFalse;
     this.sudokuHash.set(sudokuInstance.hash());
-    this.isSolved.set(Bool(false));
   }
 
   @method async submitSolution(
