@@ -25,12 +25,14 @@ export class ISudoku extends Struct({
 export class Sudoku extends SmartContract {
   @state(Field) sudokuHash = State<Field>();
   @state(Bool) isSolved = State<Bool>();
+  @state(Field) solvedBy = State<Field>();
 
   @method async init() {
     super.init();
   }
 
   @method async update(sudokuInstance: ISudoku) {
+    this.isSolved.getAndRequireEquals().assertFalse;
     this.sudokuHash.set(sudokuInstance.hash());
     this.isSolved.set(Bool(false));
   }
