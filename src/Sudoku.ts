@@ -8,6 +8,7 @@ import {
   Provable,
   Struct,
   Bool,
+  PublicKey,
 } from 'o1js';
 
 export class ISudoku extends Struct({
@@ -25,7 +26,7 @@ export class ISudoku extends Struct({
 export class Sudoku extends SmartContract {
   @state(Field) sudokuHash = State<Field>();
   @state(Bool) isSolved = State<Bool>();
-  @state(Field) solvedBy = State<Field>();
+  @state(PublicKey) solvedBy = State<PublicKey>();
 
   @method async init() {
     super.init();
@@ -100,6 +101,7 @@ export class Sudoku extends SmartContract {
       .assertEquals(sudokuHash, 'sudoku matches the one committed on-chain');
 
     this.isSolved.set(Bool(true));
+    this.solvedBy.set(this.sender.getUnconstrained());
 
     function divmod(k: number, n: number) {
       let q = Math.floor(k / n);
