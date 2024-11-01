@@ -35,7 +35,7 @@ export class Sudoku extends SmartContract {
   }
 
   @method async update(sudokuInstance: ISudoku) {
-    // this.isSolved.getAndRequireEquals().assertFalse;
+    this.isSolved.getAndRequireEquals().assertFalse;
     this.sudokuHash.set(sudokuInstance.hash());
   }
 

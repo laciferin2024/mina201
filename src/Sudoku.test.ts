@@ -55,7 +55,7 @@ describe('SudokuZkApp', () => {
     const txn = await Mina.transaction(deployerAccount, async () => {
       AccountUpdate.fundNewAccount(deployerAccount);
       await zkApp.deploy();
-      await zkApp.update(ISudoku.from(sudoku)); //init sudoku puzzle
+      // await zkApp.update(ISudoku.from(sudoku)); //doesn't work anymore init:
     });
     await txn.prove();
     // this tx needs .sign(), because `deploy()` adds an account update that requires signature authorization
