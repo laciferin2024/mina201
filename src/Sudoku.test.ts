@@ -100,7 +100,7 @@ describe('SudokuZkApp', () => {
 
     assert(!(await zkApp.isSolved.get().toBoolean()), 'failed as expected');
   });
-  it('submit solution', async () => {
+  it('submit correct solution', async () => {
     try {
       const txn = await Mina.transaction(senderAccount, async () => {
         await zkApp.submitSolution(
@@ -116,6 +116,12 @@ describe('SudokuZkApp', () => {
 
     await checkStatus();
 
+    const solvedBy = await zkApp.solvedBy.getAndRequireEquals();
+
+    console.log('solved by: ' + solvedBy.toBase58());
+
     assert(await zkApp.isSolved.get().toBoolean(), 'submitted solution');
+
+    assert(solvedBy.toBase58() === senderAccount.toBase58(), 'checked solver');
   });
 });
